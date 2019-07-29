@@ -1,0 +1,17 @@
+{
+  "name": "unistframebot",
+  "version": "0.0.1",
+  "description": "Frame data bot for discord",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node --experimental-modules index.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.6.8"
+  },
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  }
+}
