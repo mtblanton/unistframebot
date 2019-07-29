@@ -1,4 +1,5 @@
 // import discord from 'discord.js';
+import resources from './resources';
 // const client = new discord.Client();
 
 const getEntriesWithSpaces = ([title, value]) => {
@@ -27,6 +28,18 @@ const getMessageToSend = (character, move, values) => {
 \`\`\``
 }
 
+const getValuesMap = moveData => {
+    const valuesMap = new Map();
+
+    valuesMap.set('Startup', moveData['Active On']);
+    valuesMap.set('Active', moveData['Active For']);
+    valuesMap.set('Recovery', moveData['Recovery']);
+    valuesMap.set('Advantage', moveData['Frame Advantage']);
+    valuesMap.set('Damage', moveData['Damage']);
+
+    return valuesMap;
+}
+
 // !uf <character> <move>
 const handleMessage = async msg => {
     if (msg.content.startsWith('!uf')) {
@@ -34,17 +47,11 @@ const handleMessage = async msg => {
         const character = splitContent[1].toLowerCase();
         const move = splitContent[2].toUpperCase();
 
-        const characterData = (await import(`./resources/${character}.mjs`)).default;
+        const characterData = resources[character];
 
         const moveData = characterData[move];
 
-        const valuesMap = new Map();
-
-        valuesMap.set('Startup', moveData['Active On']);
-        valuesMap.set('Active', moveData['Active For']);
-        valuesMap.set('Recovery', moveData['Recovery']);
-        valuesMap.set('Advantage', moveData['Frame Advantage']);
-        valuesMap.set('Damage', moveData['Damage']);
+        const valuesMap = getValuesMap(moveData);
 
         const messageToSend = getMessageToSend(character, move, Array.from(valuesMap));
 
