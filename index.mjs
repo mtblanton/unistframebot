@@ -1,6 +1,6 @@
-import discord from 'discord.js';
-import { readFileSync } from 'fs';
-import handleMessage from './src/handleMessage';
+const discord = require('discord.js');
+const readFileSync = require('fs').readFileSync;
+const handleMessage = require('./src/handleMessage');
 
 const client = new discord.Client();
 

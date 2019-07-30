@@ -1,7 +1,7 @@
-import resources from '../resources'
-import getValuesMap from './getValuesMap';
-import getMessageToSend from './getMessageToSend';
-import getCharacterName from './getCharacterName';
+const resources = require('../resources')
+const getValuesMap = require('./getValuesMap');
+const getMessageToSend = require('./getMessageToSend');
+const getCharacterName = require('./getCharacterName');
 
 // !uf <character> <move>
 /**
