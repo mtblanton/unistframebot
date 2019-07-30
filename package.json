@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Frame data bot for discord",
   "main": "index.mjs",
-  "type": "module",
   "scripts": {
     "start": "node index.js"
   },
