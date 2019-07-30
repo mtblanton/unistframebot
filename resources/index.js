@@ -19,7 +19,7 @@ const wagner = require('./wagner');
 const waldstein = require('./waldstein');
 const yuzuriha = require('./yuzuriha');
 
-export default {
+module.exports = {
     akatsuki,
     byakuya,
     carmine,

@@ -70,4 +70,4 @@ const getCharacterName = character => {
     }
 }
 
-export default getCharacterName;
+module.exports = getCharacterName;

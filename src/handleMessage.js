@@ -46,4 +46,4 @@ const handleMessage = msg => {
     }
 }
 
-export default handleMessage;
+module.exports = handleMessage;

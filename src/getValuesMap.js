@@ -12,4 +12,4 @@ const getValuesMap = moveData => {
     return valuesMap;
 }
 
-export default getValuesMap;
+module.exports = getValuesMap;

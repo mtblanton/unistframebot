@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     "5A": {
        "Input": "",
        "Damage": "160",

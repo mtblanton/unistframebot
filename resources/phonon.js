@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     "5A": {
        "Command": "",
        "Damage": "180",

@@ -56,4 +56,4 @@ ${invincibilityMessage}
     return message;
 }
 
-export default getMessageToSend;
+module.exports = getMessageToSend;
