@@ -1,7 +1,6 @@
 import discord from 'discord.js';
 import resources from './resources';
 import { readFileSync } from 'fs';
-import { stringify } from 'querystring';
 
 /**
  * @param {[string, string]} titleValueArray array of titles and values
@@ -20,22 +19,45 @@ const getEntriesWithSpaces = ([title, value]) => {
     }
 };
 
+const addToTable = (entry) => (acc, current) => {
+    return current.value.length > 0 
+        ? acc += current[entry] + ` | ` 
+        : acc;
+}
+
 /**
  * @param {string} character
  * @param {string} move
  * @param {[string, string][]} values
  */
-const getMessageToSend = (character, move, values) => {
+const getMessageToSend = (character, move, values, invincibility) => {
+    const INITIAL_ROW_VALUE = '| ';
+
     const entriesWithSpaces = values.map(getEntriesWithSpaces);
-    const tableHeaders = entriesWithSpaces.reduce((acc, current) => acc += current.title + ` | `, '');
-    const tableValues = entriesWithSpaces.reduce((acc, current) => acc += current.value + ` | `, '');
+    const firstRowEntries = entriesWithSpaces.slice(0, 3);
+    const secondRowEntries = entriesWithSpaces.slice(3, 6);
+
+    const firstRowHeaders = firstRowEntries.reduce(addToTable('title'), INITIAL_ROW_VALUE).trim();
+    const firstRowValues = firstRowEntries.reduce(addToTable('value'), INITIAL_ROW_VALUE).trim();
+
+    const secondRowHeaders = secondRowEntries.reduce(addToTable('title'), INITIAL_ROW_VALUE).trim();
+    const secondRowValues = secondRowEntries.reduce(addToTable('value'), INITIAL_ROW_VALUE).trim();
 
     const capitalizedCharacter = character.charAt(0).toUpperCase() + character.slice(1);
-    return `${capitalizedCharacter} ${move}
+
+    const invincibilityMessage = invincibility ? `\nInvincibility:\n${invincibility}` : '';
+    let message = `${capitalizedCharacter} ${move}
 \`\`\`
-| ${tableHeaders.trim()}
-| ${tableValues.trim()}
+${firstRowHeaders}
+${firstRowValues}
+
+${secondRowHeaders}
+${secondRowValues}
+
+${invincibilityMessage}
 \`\`\``
+
+    return message;
 }
 
 const getValuesMap = moveData => {
@@ -47,6 +69,7 @@ const getValuesMap = moveData => {
     valuesMap.set('Recovery', moveData['Recovery']);
     valuesMap.set('Advantage', moveData['Frame Advantage']);
     valuesMap.set('Damage', moveData['Damage']);
+    valuesMap.set('Hit Type', moveData['Hit Type'])
 
     return valuesMap;
 }
@@ -57,11 +80,14 @@ const getValuesMap = moveData => {
  * @param {import('discord.js').Message} msg
  */
 const handleMessage = msg => {
-    if (msg.content.startsWith('!uf')) {
+    if (msg.content.toLowerCase().startsWith('!uf')) {
+        try {
+
         const splitContent = msg.content.trim().split(' ');
         const character = splitContent[1].toLowerCase();
         let move = splitContent[2];
 
+        //We can't toUpperCase jump moves because they start with a lower-case j :(
         if(move.startsWith('j.')) {
             const splitMove = move.split('j.');
             move = 'j.' + splitMove[1].toUpperCase();
@@ -82,10 +108,14 @@ const handleMessage = msg => {
         }
 
         const valuesMap = getValuesMap(moveData);
-        const messageToSend = getMessageToSend(character, move, Array.from(valuesMap));
+        const messageToSend = getMessageToSend(character, move, Array.from(valuesMap), moveData['Invincibility'], moveData['Attribute']);
 
         console.log(`Sending:\n${messageToSend}`);
         msg.channel.send(messageToSend);
+        } catch(e) {
+            console.error(`Something went wrong!\nMessage:\n${msg.content}\n\nError:\n${e}`)
+            msg.channel.send('Something went wrong!');
+        }
     }
 }
 
