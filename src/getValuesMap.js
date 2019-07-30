@@ -1,5 +1,4 @@
 const getValuesMap = moveData => {
-    console.log(moveData);
     const valuesMap = new Map();
 
     valuesMap.set('Startup', moveData['Active On']);

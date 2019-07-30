@@ -35,9 +35,8 @@ const handleMessage = msg => {
         }
 
         const valuesMap = getValuesMap(moveData);
-        const messageToSend = getMessageToSend(character, move, Array.from(valuesMap), moveData['Invincibility'], moveData['Attribute']);
+        const messageToSend = getMessageToSend(character, move, Array.from(valuesMap), moveData['Invincibility']);
 
-        console.log(`Sending:\n${messageToSend}`);
         msg.channel.send(messageToSend);
         } catch(e) {
             console.error(`Something went wrong!\nMessage:\n${msg.content}\n\nError:\n${e}`)
