@@ -10,6 +10,7 @@ const getCharacterName = require('./getCharacterName');
 const handleMessage = msg => {
     if (msg.content.toLowerCase().startsWith('!uf')) {
         try {
+            console.log(`${new Date().toISOString()}}:\n${msg.author};\n${msg.content}`)
             const splitContent = msg.content.trim().split(' ');
             const character = getCharacterName(splitContent[1]);
             let move = splitContent[2];
