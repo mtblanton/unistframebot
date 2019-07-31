@@ -66,7 +66,7 @@ const getCharacterName = character => {
             return 'yuzuriha';
 
         default:
-            return character;
+            return lowerCaseCharacterName;
     }
 }
 
